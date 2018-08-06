@@ -801,9 +801,9 @@ GameObject:
   - component: {fileID: 1545859481}
   - component: {fileID: 1545859488}
   - component: {fileID: 1545859489}
-  - component: {fileID: 1545859490}
+  - component: {fileID: 1545859491}
   m_Layer: 8
-  m_Name: 1
+  m_Name: Player 1
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -947,7 +947,8 @@ MonoBehaviour:
   SkillScore: 30
   BoxDestroyScore: 5
   KillPlayerScore: 15
---- !u!114 &1545859490
+  RequireTime: 10
+--- !u!114 &1545859491
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -955,7 +956,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 1545859480}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e18d371ec5b06b408072e94dfcb2bce, type: 3}
+  m_Script: {fileID: 11500000, guid: 8900befa90d1cc046b3b419db45c0e90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RequireTime: 10
