@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoxManager : MonoBehaviour {
+public class BoxManager : MonoBehaviour, TListener {
     public int BoxType;//仅供测试用
 
     private Transform trans;//方块位置 用于获取方块类型
@@ -14,7 +14,13 @@ public class BoxManager : MonoBehaviour {
         trans = GetComponent<Transform>();
         Global = GameObject.FindGameObjectWithTag("Global");//此处Tag后期注意修改
         Map = Global.GetComponent<MapManager>();
-        setBoxType(Map); 
+        setBoxType(Map);
+
+        if (BoxType == 1)
+        {
+            EventManager.Instance.AddListener(EVENT_TYPE.BOMB_EXPLODE, this);
+        }
+
     }
     /*
      * 获取当前管理方块的类型
@@ -31,14 +37,28 @@ public class BoxManager : MonoBehaviour {
     //当方块处于爆炸区域内
     private void InExplode()
     {
-        if(BoxType == 1)
+         Destroy(gameObject);
+         //TODO 爆炸粒子特效
+         //TODO 更新地图信息
+    }
+
+    public bool OnEvent(EVENT_TYPE Event_Type, Component Sender, Object param, Dictionary<string, object> value)
+    {
+        switch (Event_Type) //可以接收多种事件
         {
-            Destroy(gameObject);
-            //TODO 爆炸粒子特效
+            case (EVENT_TYPE.BOMB_EXPLODE): //指定事件发生时
+                InExplode(); //执行爆炸函数
+                //发送方块被摧毁事件
+                EventManager.Instance.PostNotification(EVENT_TYPE.BOX_DESTROY, this, null, value); 
+                return true; 
+            default: return false;
         }
     }
 
-
+    public Object getGameObject()
+    {
+        return gameObject;
+    }
 
 
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerBomb : MonoBehaviour {
+public class PlayerBomb : MonoBehaviour, TListener {
 
     public GameObject Bomb;//将要放置的炸弹Prefab
 
@@ -24,16 +24,14 @@ public class PlayerBomb : MonoBehaviour {
         IsBuffing = false;
         SetBombTiming = 0;
         BuffTiming = 0f;
-	}
 
-    // Update is called once per frame
+        EventManager.Instance.AddListener(EVENT_TYPE.TURING_SET_BOMB, this); //注册监听器 监听放置炸弹
+        EventManager.Instance.AddListener(EVENT_TYPE.BOMB_BUFF, this); //注册监听器 监听加强炸弹
+    }
+
     private void FixedUpdate()
     {
-        Timing();//技能计时
-        if (Input.GetButton("Fire1") && BombAvaliable) //用户选择放置炸弹
-        {
-            SetBomb();//放置炸弹
-        }
+        Timing();//计时器
     }
 
     //如果玩家选择放置炸弹并且技能不在CD
@@ -42,7 +40,12 @@ public class PlayerBomb : MonoBehaviour {
         //创建炸弹
         GameObject newBomb = Instantiate(Bomb, new Vector3((transform.position.x), -0.15f, (transform.position.z)), gameObject.transform.rotation);
         BombAvaliable = false;
-        newBomb.GetComponent<BombManager>().SetBombInfo(PlayerID, CurrentBombArea);//设置炸弹的基本信息
+        //发送炸弹设置事件
+        Dictionary<string, object> TempDic = new Dictionary<string, object>();
+        TempDic.Add("PlayerID", PlayerID);
+        TempDic.Add("BombArea", CurrentBombArea);
+        EventManager.Instance.PostNotification(EVENT_TYPE.BOMB_SET_INFO, this, newBomb, TempDic);
+        TempDic.Clear(); //及时清理TempDic以释放内存
     }
 
     //计时器 包括炸弹放置和技能计时
@@ -52,7 +55,7 @@ public class PlayerBomb : MonoBehaviour {
         {
             SetBombTiming += Time.deltaTime;
         }
-        if(SetBombTiming >= BombCD)//冷却时间到时设置炸弹可用 并重置计时器
+        if(SetBombTiming >= BombCD)//冷却时间到时 设置炸弹可用 并重置计时器
         {
             BombAvaliable = true;
             SetBombTiming = 0;
@@ -70,11 +73,37 @@ public class PlayerBomb : MonoBehaviour {
         }
     }
 
-    //加强技能 在PlayerScoreManager内调用
+    //加强技能 在OnEvent内调用
     public void IncreaseBombArea()
     {
-        IsBuffing = true;
+        IsBuffing = true;//设置处于加强状态
         CurrentBombArea += BuffValue;
+    }
+
+    public bool OnEvent(EVENT_TYPE Event_Type, Component Sender, Object param = null, Dictionary<string, object> value = null)
+    {
+        switch (Event_Type)
+        {
+            case EVENT_TYPE.TURING_SET_BOMB: //选手操作：放置炸弹
+                if (BombAvaliable)//如果当前可放置炸弹
+                {
+                    SetBomb();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            case EVENT_TYPE.BOMB_BUFF: //选手操作：加强炸弹
+                IncreaseBombArea();
+                return true;
+            default: return false;
+        }
+    }
+
+    public Object getGameObject()
+    {
+        return gameObject;
     }
 
 }

@@ -521,6 +521,7 @@ GameObject:
   - component: {fileID: 798218719}
   - component: {fileID: 798218718}
   - component: {fileID: 798218717}
+  - component: {fileID: 798218720}
   m_Layer: 9
   m_Name: Floor
   m_TagString: Global
@@ -555,7 +556,6 @@ MonoBehaviour:
   InstUnboomCube: {fileID: 1642096506529204, guid: 0067153bb502cad45bff65b8c0df5e1a,
     type: 2}
   ReduceGameAreaTime: 2
-  ReduceTiming: 0
 --- !u!4 &798218719
 Transform:
   m_ObjectHideFlags: 0
@@ -570,6 +570,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &798218720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 798218716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4728d2f6499522b409cf3d0e521aa0ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &889602555
 GameObject:
   m_ObjectHideFlags: 0
@@ -815,10 +826,6 @@ MonoBehaviour:
   CurrentBombArea: 0.7
   BuffTime: 5
   BuffValue: 1
-  BombAvaliable: 0
-  SetBombTiming: 0
-  IsBuffing: 0
-  BuffTiming: 0
 --- !u!114 &1545859482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -831,8 +838,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 6
-  playerRigid: {fileID: 0}
-  Position: {x: 0, y: 0, z: 0}
 --- !u!54 &1545859483
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -927,7 +932,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IncreaseHPValue: 30
-  CurrentHP: 0
 --- !u!114 &1545859489
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -943,7 +947,6 @@ MonoBehaviour:
   SkillScore: 30
   BoxDestroyScore: 5
   KillPlayerScore: 15
-  CurrentScore: 0
 --- !u!114 &1545859490
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -956,6 +959,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RequireTime: 10
-  RequireBuffState: 0
-  RequireAvaliable: 0
-  RequireTiming: 0

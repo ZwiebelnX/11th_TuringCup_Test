@@ -20,14 +20,14 @@ public class PlayerBuffer : MonoBehaviour {
     {
         if (RequireAvaliable)
         {
-            GetBuff(); //如果技能可用 检测玩家请求
+            //GetBuff(); //如果技能可用 检测玩家请求
         }
         else
         {
             Timing(); //如果技能不可用 计时
         }
     }
-
+    /*
     private bool GetBuff()
     {
         //玩家选择发动技能1：增加炸弹爆炸范围
@@ -45,15 +45,17 @@ public class PlayerBuffer : MonoBehaviour {
         //玩家选择发动技能2：增加血量
         if (Input.GetKey(KeyCode.Alpha2))
         {
-            if((RequireBuffState = gameObject.GetComponent<PlayerScoreManager>().Upgrade()))
+            if((RequireBuffState = gameObject.GetComponent<PlayerHealth>().IncreaseHP()))
             {
-                gameObject.SendMessage("IncreaseHP");
                 RequireAvaliable = false;
             }
             return RequireBuffState;
         }
-        return RequireBuffState;
+
+
+        return false;
     }
+    */
 
     //技能计时器
     private void Timing()

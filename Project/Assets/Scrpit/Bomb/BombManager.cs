@@ -1,8 +1,8 @@
-﻿ using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BombManager : MonoBehaviour {
+public class BombManager : MonoBehaviour, TListener {
     public float BoomTime = 3f; //仅供测试 炸弹爆炸时间
     public int BombPower = 30;//仅供测试 炸弹威力
 
@@ -10,7 +10,7 @@ public class BombManager : MonoBehaviour {
     private int BombOwner = 0; //炸弹所有者编号
     private float Timing = 0; //炸弹倒计时  
 
-    private float BombRadius; //仅供测试 炸弹爆炸范围 
+    private float BombRadius; //炸弹爆炸范围 
 
     /*
      * ----------------------注意----------------------
@@ -21,21 +21,32 @@ public class BombManager : MonoBehaviour {
      */
     private SphereCollider spherecollider; //获取炸弹的物理碰撞器
 
-	void Start () {
-        //炸弹所有者由放置炸弹的玩家的脚本调用设置
+    private void Awake()
+    {
+        /*
+         * 由于创建炸弹实例之后
+         * PlayerBomb马上会发送BOMB_SET_INFO事件
+         * 故监听器的注册提前到Awake阶段
+         */
+        EventManager.Instance.AddListener(EVENT_TYPE.BOMB_SET_INFO, this); //注册监听器 监听设置信息事件
+    }
+
+    //初始化其他变量
+    void Start () {
         Timing = 0f;
         spherecollider = GetComponent<SphereCollider>();
-	}
+        HadSetInfo = false;
+
+    }
 
     private void FixedUpdate()
     {
         if (Timing >= BoomTime)
         {
-            Timing = 0f;//计时器置0 防止Explode被多次调用 造成玩家多次受到伤害
-            Explode(); //时间到 爆炸
-            Destroy(gameObject, 0.5f); //延时销毁以播放动画
+            Timing = -1f;//计时器置-1 防止多次发送事件
+            Explode();
         }
-        else
+        else if (Timing >= 0)
         {
             BoomTiming(); //时间未到 继续计时
         }
@@ -43,18 +54,18 @@ public class BombManager : MonoBehaviour {
     }
     
     //单次设置炸弹拥有者
-    //本函数会在炸弹创建时同时调用
-    public void SetBombInfo(int PlayerIndex, float Radius)
+    //本函数会在炸弹创建同时调用
+    public void SetBombInfo(int PlayerID, float Radius)
     {
         if (!HadSetInfo)//只有在没有设置信息的情况下才允许设置
         {
-            BombOwner = PlayerIndex;
-            HadSetInfo = true;
+            BombOwner = PlayerID; //设置角色ID
             BombRadius = Radius; //设置炸弹范围
+            HadSetInfo = true; //不允许再次设置
         }
     }
 
-    //计时函数
+    //炸弹爆炸计时函数
     private void BoomTiming()
     {
             Timing += Time.deltaTime;
@@ -73,23 +84,38 @@ public class BombManager : MonoBehaviour {
     {
         //获取爆炸范围内的所有在Attackable层的物体（包括可炸方块和玩家）
         Collider[] colliders = Physics.OverlapSphere(transform.position, BombRadius,LayerMask.GetMask("Attackable"));
-        foreach(Collider hit in colliders)
+        Dictionary<string, object> TempDic = new Dictionary<string, object>();
+        TempDic.Add("PlayerID", BombOwner);
+        TempDic.Add("BombPower", BombPower);
+        foreach (Collider hit in colliders)
         {
-            if (hit.CompareTag("Player"))//如果有玩家处于爆炸范围内 造成伤害
-            {
-                hit.GetComponent<PlayerHealth>().TakeDamage(BombPower, BombOwner);//传递伤害数值和伤害人
-            }
-            else
-            {
-                hit.SendMessage("InExplode");//调用获取物体的爆炸函数
-                GameObject.Find(BombOwner.ToString()).GetComponent<PlayerScoreManager>().GainScore("BoxDestroy");//获得分数
-            }
+            //向在Attackable层内的 在爆炸范围内的每个实例发送事件（指定了特定对象）
+            EventManager.Instance.PostNotification(EVENT_TYPE.BOMB_EXPLODE, this, hit.gameObject, TempDic);
         }
+        TempDic.Clear();
+        Destroy(gameObject, 0.5f);//延迟销毁 播放动画
+
     }
 
-    //仅用于调试
+    //仅用于调试（在Scene中画出爆炸范围）
     private void OnDrawGizmos()
     {
         Gizmos.DrawSphere(transform.position, BombRadius);
+    }
+
+    public bool OnEvent(EVENT_TYPE Event_Type, Component Sender, Object param, Dictionary<string, object> value)
+    {
+        switch (Event_Type)
+        {
+            case (EVENT_TYPE.BOMB_SET_INFO): //设置信息事件
+                SetBombInfo((int)value["PlayerID"],(float)value["BombArea"]); //传参
+                return true;
+            default:return false;
+        }
+    }
+
+    public Object getGameObject()
+    {
+        return gameObject;
     }
 }
