@@ -4,9 +4,15 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
-    public static float RemainingTime = 0;
+    private static float RemainingTime = 0;
 
-	void Start () {
+    //返回游戏剩余时间
+    public static float GerRemainTime()
+    {
+        return RemainingTime;
+    }
+
+    void Start () {
         RemainingTime = 120f;
 	}
 

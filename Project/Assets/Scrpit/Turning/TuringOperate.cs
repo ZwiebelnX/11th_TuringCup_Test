@@ -27,6 +27,7 @@ public class TuringOperate : MonoBehaviour {
         Buff(); //选手操作：加强
     }
 
+    // TODO 拆分Movement成四个方向的移动函数
     private bool Movement(float h, float v)
     {
         Dictionary<string, object> TempDic = new Dictionary<string, object>(); //创建临时Dictionary 传递参数
@@ -38,7 +39,10 @@ public class TuringOperate : MonoBehaviour {
         return isSuccess;
     }
 
-    //选手操作：放置炸弹
+    /// <summary>
+    /// 在角色当前的座标位置放置一颗炸弹
+    /// </summary>
+    /// <returns>操作是否成功</returns>
     private bool SetBomb()
     {
         bool isSuccess = false;
@@ -58,7 +62,10 @@ public class TuringOperate : MonoBehaviour {
         BuffShoot();
     }
 
-    //选手操作：增加炸弹范围
+    /// <summary>
+    /// 扣除一定积分 扩大炸弹的爆炸范围 持续5秒
+    /// </summary>
+    /// <returns>操作是否成功</returns>
     private bool BuffBomb()
     {
         bool isSuccess = false;
@@ -72,7 +79,10 @@ public class TuringOperate : MonoBehaviour {
             return false;
     }
 
-    //选手操作：增强射击威力
+    /// <summary>
+    /// 扣除一定积分 增加射击威力 持续5秒
+    /// </summary>
+    /// <returns></returns>
     //备注见上
     private bool BuffShoot()
     {
@@ -86,7 +96,10 @@ public class TuringOperate : MonoBehaviour {
             return false;
     }
 
-    //选手操作：回血
+    /// <summary>
+    /// 扣除一定积分 恢复一定血量
+    /// </summary>
+    /// <returns></returns>
     //备注见上
     private bool BuffHP()
     {

@@ -34,17 +34,12 @@ public class MapManager : MonoBehaviour {
     {
 
         map = new List<string[]>();
-
+        //TODO 多地图加载
         LoadFile(Application.dataPath + "/Maps", "01.csv");
         Debug.Log("MapFile loaded");
 
         LoadMap(map);
         Debug.Log("Map loaded");
-
-    }
-
-    private void FixedUpdate()
-    {
 
     }
 
@@ -98,12 +93,12 @@ public class MapManager : MonoBehaviour {
     }
 
     //更新地图数组信息（不更新地图 更新地图工作交由事件驱动的实现类）
-    public void MapUpgrade(int row, int col, int type)
+    private void MapUpgrade(int row, int col, int type)
     {
         map[row][col] = type.ToString();
     }
 
-    public void ReduceGameArea(int circle)
+    private void ReduceGameArea(int circle)
     {
         //TODO 实现缩圈
     }
