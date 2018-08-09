@@ -13,9 +13,10 @@ public class MapManager : MonoBehaviour {
      * 后期可以根据需要转换为int数组
      */
 
-    public GameObject InstBoomCube;     // 可炸方块
-    public GameObject InstUnboomCube;   // 不可炸方块
-    public float ReduceGameAreaTime = 2f; //缩圈时间 仅供测试
+    public GameObject BoomCubePrefab;     // 可炸方块
+    public GameObject UnboomCubePrefab;   // 不可炸方块
+    public float ReduceGameAreaBeginTime; //缩圈开始时的游戏剩余时间
+    public float ReduceGameAreaTime; //缩圈时间 仅供测试
 
     private List<string[]> map; //地图信息作为string数组存储在List内（变相二维数组）
     private float ReduceTiming; //缩圈计时器
@@ -47,18 +48,18 @@ public class MapManager : MonoBehaviour {
     {
         int BoxType;
 
-        for (int i = 0; i < 14; i++)        // 测试时只有两行，实际需要14
+        for (int i = 0; i < 14; i++)
         {
             for (int j = 0; j < 14; j++)
             {
                 BoxType = GetBoxType(i, j);
                 if (BoxType == 1)      // 1表示可炸块
                 {
-                    GameObject.Instantiate(InstBoomCube, new Vector3(i, 0, j), gameObject.transform.rotation);
+                    GameObject.Instantiate(BoomCubePrefab, new Vector3(i, 0, j), gameObject.transform.rotation);
                 }
                 else if (BoxType == 2)        // 2表示不可炸块
                 {
-                    GameObject.Instantiate(InstUnboomCube, new Vector3(i, 0, j), gameObject.transform.rotation);
+                    GameObject.Instantiate(UnboomCubePrefab, new Vector3(i, 0, j), gameObject.transform.rotation);
                 }
             }
         }

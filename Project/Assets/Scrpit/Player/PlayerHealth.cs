@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour,TListener {
-    public int IncreaseHPValue = 30;//仅供测试 技能增加的血量数值
+    public int IncreaseHPValue;//仅供测试 技能增加的血量数值
 
     private int CurrentHP;//当前角色血量
 

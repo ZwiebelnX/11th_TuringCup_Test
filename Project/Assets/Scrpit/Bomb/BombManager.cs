@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BombManager : MonoBehaviour, TListener {
-    public float BoomTime = 3f; //仅供测试 炸弹爆炸时间
-    public int BombPower = 30;//仅供测试 炸弹威力
+    public float BoomTime; //仅供测试 炸弹爆炸时间
+    public int BombPower;//仅供测试 炸弹威力
 
     private bool HadSetInfo = false; //炸弹是否设置了基本信息
     private int BombOwner = 0; //炸弹所有者编号

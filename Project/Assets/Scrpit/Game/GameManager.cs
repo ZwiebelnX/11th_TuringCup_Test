@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
-    private static float RemainingTime = 0;
+    public float GameTime; //（仅供测试）游戏总时间
+
+    private static float RemainingTime; //游戏剩余时间
 
     //返回游戏剩余时间
     public static float GerRemainTime()
@@ -13,7 +15,7 @@ public class GameManager : MonoBehaviour {
     }
 
     void Start () {
-        RemainingTime = 120f;
+        RemainingTime = GameTime;
 	}
 
     private void FixedUpdate()

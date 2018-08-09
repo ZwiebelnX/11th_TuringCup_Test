@@ -24,6 +24,7 @@ public class TuringOperate : MonoBehaviour {
             Movement(h, v);//选手操作：移动
         }
         SetBomb(); //选手操作：放置炸弹
+        Shoot();
         Buff(); //选手操作：加强
     }
 
@@ -50,6 +51,21 @@ public class TuringOperate : MonoBehaviour {
         {
             //发送放置炸弹（指定了执行对象）
             isSuccess = EventManager.Instance.PostNotification(EVENT_TYPE.TURING_SET_BOMB, this, gameObject);
+        }
+        return isSuccess;
+    }
+
+    /// <summary>
+    /// 在角色当前的座标位置放置一颗炸弹
+    /// </summary>
+    /// <returns>操作是否成功</returns>
+    private bool Shoot()
+    {
+        bool isSuccess = false;
+        if (Input.GetButton("Fire2"))
+        {
+            //发送放置炸弹（指定了执行对象）
+            isSuccess = EventManager.Instance.PostNotification(EVENT_TYPE.TURING_FIRE, this, gameObject);
         }
         return isSuccess;
     }

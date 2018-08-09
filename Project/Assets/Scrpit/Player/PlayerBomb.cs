@@ -6,11 +6,11 @@ public class PlayerBomb : MonoBehaviour, TListener {
 
     public GameObject Bomb;//将要放置的炸弹Prefab
 
-    public float BombCD = 2f; //炸弹放置冷却时间
-    public int PlayerID = 1; //玩家ID
-    public float CurrentBombArea = 0.7f; //当前炸弹爆炸范围
-    public float BuffTime = 5f; //加强时间
-    public float BuffValue = 1; //加强数值（此处为爆炸范围）
+    public float BombCD; //炸弹放置冷却时间
+    public int PlayerID; //玩家ID
+    public float CurrentBombArea; //当前炸弹爆炸范围
+    public float BuffTime; //加强时间
+    public float BuffValue; //加强数值（此处为爆炸范围）
 
 
     private bool BombAvaliable = false; //当前是否允许放置炸弹

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BoxManager : MonoBehaviour, TListener {
-    public int BoxType;//仅供测试用
 
+    private int BoxType;//方块类型 用于判别可炸和不可炸
     private Transform trans;//方块位置 用于获取方块类型
     private GameObject Global;//目前MapManager脚本绑定在Floor上 后期可考虑改成全局单例类
     private MapManager Map;//MapManager脚本引用
@@ -13,12 +13,12 @@ public class BoxManager : MonoBehaviour, TListener {
     {
         trans = GetComponent<Transform>();
         Global = GameObject.FindGameObjectWithTag("Global");//此处Tag后期注意修改
-        Map = Global.GetComponent<MapManager>();
+        Map = Global.GetComponent<MapManager>(); //获取MapManager的引用
         setBoxType(Map);
 
         if (BoxType == 1)
         {
-            EventManager.Instance.AddListener(EVENT_TYPE.BOMB_EXPLODE, this);
+            EventManager.Instance.AddListener(EVENT_TYPE.BOMB_EXPLODE, this); //只对可炸方块注册监听爆炸的监听器
         }
 
     }

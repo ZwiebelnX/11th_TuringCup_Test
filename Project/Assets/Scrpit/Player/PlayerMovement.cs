@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour,TListener {
-    public float moveSpeed = 6.0f;//角色移动的速度
+    public float moveSpeed;//角色移动的速度
 
     private Rigidbody playerRigid;//角色刚体
     private Vector3 Position;//玩家现在所处位置

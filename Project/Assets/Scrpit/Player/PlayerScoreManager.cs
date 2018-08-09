@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class PlayerScoreManager : MonoBehaviour, TListener {
 
-    public float PlayerID = 1; //当前玩家ID
+    public float PlayerID; //当前玩家ID
 
-    public int SkillScore = 30; //一个技能所花费的分数
-    public int BoxDestroyScore = 5; //摧毁盒子获得的分数
-    public int KillPlayerScore = 15; //击杀敌人获得的分数
+    public int SkillScore; //一个技能所花费的分数
+    public int BoxDestroyScore; //摧毁盒子获得的分数
+    public int KillPlayerScore; //击杀敌人获得的分数
 
 
-    public float RequireTime = 10f; //技能请求间隔
+    public float RequireTime; //技能请求间隔
 
     private int CurrentScore;//当前分数
 
