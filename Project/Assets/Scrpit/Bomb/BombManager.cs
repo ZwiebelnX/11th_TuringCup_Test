@@ -12,6 +12,10 @@ public class BombManager : MonoBehaviour, TListener {
 
     private float BombRadius; //炸弹爆炸范围 
 
+    private bool PlayerFirstExit;
+
+    private ParticleSystem ExplosionSmoke;
+
     /*
      * ----------------------注意----------------------
      * 在Unity中 炸弹的Inspector排序中
@@ -36,7 +40,8 @@ public class BombManager : MonoBehaviour, TListener {
         Timing = 0f;
         spherecollider = GetComponent<SphereCollider>();
         HadSetInfo = false;
-
+        ExplosionSmoke = GetComponent<ParticleSystem>();
+        PlayerFirstExit = true;
     }
 
     private void FixedUpdate()
@@ -74,10 +79,15 @@ public class BombManager : MonoBehaviour, TListener {
     //本函数只会被调用一次 当玩家退出炸弹的碰撞体后激活炸弹的碰撞体 玩家不能再次进入
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (PlayerFirstExit)
         {
-            spherecollider.enabled = true;//启动物理碰撞器
+            if (other.CompareTag("Player"))
+            {
+                spherecollider.enabled = true;//启动物理碰撞器
+                PlayerFirstExit = false;
+            }
         }
+        
     }
 
     private void Explode()
@@ -85,6 +95,9 @@ public class BombManager : MonoBehaviour, TListener {
         //获取爆炸范围内的所有在Attackable层的物体（包括可炸方块和玩家）
         Collider[] colliders = Physics.OverlapSphere(transform.position, BombRadius,LayerMask.GetMask("Attackable"));
         Dictionary<string, object> TempDic = new Dictionary<string, object>();
+        spherecollider.enabled = false;
+        GetComponent<MeshRenderer>().enabled = false;
+        ExplosionSmoke.Play();
         TempDic.Add("PlayerID", BombOwner);
         TempDic.Add("BombPower", BombPower);
         foreach (Collider hit in colliders)
@@ -93,7 +106,7 @@ public class BombManager : MonoBehaviour, TListener {
             EventManager.Instance.PostNotification(EVENT_TYPE.BOMB_EXPLODE, this, hit.gameObject, TempDic);
         }
         TempDic.Clear();
-        Destroy(gameObject, 0.5f);//延迟销毁 播放动画
+        Destroy(gameObject, 4f);//延迟销毁 播放动画
 
     }
 

@@ -120,7 +120,7 @@ public class PlayerScoreManager : MonoBehaviour, TListener {
             //注释见上
             case EVENT_TYPE.TURING_BUFF_HP:
                 isSuccess = false;
-                if((gameObject.GetComponent<PlayerHealth>().GetHP()) <= 100)
+                if((gameObject.GetComponent<PlayerHealth>().GetHP()) < 100)//当玩家血量小于指定数值时才准许加血
                 {
                     if (RequireAvaliable && (isSuccess = Upgrade()))
                     {

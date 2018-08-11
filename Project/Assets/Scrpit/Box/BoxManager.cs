@@ -9,6 +9,7 @@ public class BoxManager : MonoBehaviour, TListener {
     private GameObject Global;//目前MapManager脚本绑定在Floor上 后期可考虑改成全局单例类
     private MapManager Map;//MapManager脚本引用
 
+    private ParticleSystem ExplosionSmoke;
     private void Start()
     {
         trans = GetComponent<Transform>();
@@ -19,6 +20,7 @@ public class BoxManager : MonoBehaviour, TListener {
         if (BoxType == 1)
         {
             EventManager.Instance.AddListener(EVENT_TYPE.BOMB_EXPLODE, this); //只对可炸方块注册监听爆炸的监听器
+            ExplosionSmoke = GetComponent<ParticleSystem>();
         }
 
     }
@@ -37,9 +39,12 @@ public class BoxManager : MonoBehaviour, TListener {
     //当方块处于爆炸区域内
     private void InExplode()
     {
-         Destroy(gameObject);
-         //TODO 爆炸粒子特效
-         //TODO 更新地图信息
+        GetComponent<MeshRenderer>().enabled = false;
+        ExplosionSmoke.Play();
+        GetComponent<BoxCollider>().enabled = false;
+        Destroy(gameObject,5f);
+
+         
     }
 
     public bool OnEvent(EVENT_TYPE Event_Type, Component Sender, Object param, Dictionary<string, object> value)

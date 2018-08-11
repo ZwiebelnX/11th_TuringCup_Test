@@ -47,7 +47,7 @@ public class PlayerShoot : MonoBehaviour,TListener {
         IsBuffing = false;
         BuffTiming = 0;
         EventManager.Instance.AddListener(EVENT_TYPE.TURING_FIRE, this);
-        EventManager.Instance.AddListener(EVENT_TYPE.TURING_BUFF_SHOOT, this);
+        EventManager.Instance.AddListener(EVENT_TYPE.SHOOT_BUFF, this);
 
         //调试阶段使用效果
         prefabInstantiate = Instantiate(prefab, transform);
@@ -62,7 +62,7 @@ public class PlayerShoot : MonoBehaviour,TListener {
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
         Timing();
 
         //调试用效果
